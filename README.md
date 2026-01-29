@@ -1,2 +1,2 @@
-# Uklon-Calculator-for-Sumy
-Калькулятор вартості замовлення 
+# UklonCalc
+Перевірка розрахунків Uklon
