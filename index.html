@@ -562,8 +562,8 @@ let total = baseFare * coef;
 let lines = [`• (${t.base} + (${km.toFixed(2)} - ${t.minKm}) × ${t.perKm}) × ${coef.toFixed(2)} = ${(baseFare*coef).toFixed(2)}💵`];
 
 if (paidMinutes > 0) {
-let addPaid = paidMinutes * t.extraMinute;
-lines.push(`• Платні хв. (${paidMinutes} × ${t.extraMinute}💵) = ${addPaid.toFixed(2)}💵`);
+let addPaid = coef * paidMinutes * t.extraMinute;
+lines.push(`• Платні хв. (${coef.toFixed(2)} × ${paidMinutes} × ${t.extraMinute}💵) = ${addPaid.toFixed(2)}💵`);
 total += addPaid;
 }
 if (midPoints > 0) {
@@ -625,9 +625,9 @@ return;
 }
 
 const totals = {
-std: calcFare(km, STD) * coef + paidMinutes*STD.extraMinute + midPoints*STD.extraPoint,
-cf: calcFare(km, CFM) * coef + paidMinutes*CFM.extraMinute + midPoints*CFM.extraPoint,
-biz: calcFare(km, BIZ) * coef + paidMinutes*BIZ.extraMinute + midPoints*BIZ.extraPoint
+std: calcFare(km, STD) * coef + coef * paidMinutes*STD.extraMinute + midPoints*STD.extraPoint,
+cf: calcFare(km, CFM) * coef + coef * paidMinutes*CFM.extraMinute + midPoints*CFM.extraPoint,
+biz: calcFare(km, BIZ) * coef + coef * paidMinutes*BIZ.extraMinute + midPoints*BIZ.extraPoint
 };
 
 document.getElementById("stdCalc").textContent = fmt(totals.std);
