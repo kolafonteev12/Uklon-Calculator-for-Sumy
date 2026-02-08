@@ -1,2 +1,2 @@
-# UklonCalc
-Перевірка розрахунків Uklon
+# Uklon-Calculator-for-Sumy
+Перевірка розрахунків Uklon (Суми)

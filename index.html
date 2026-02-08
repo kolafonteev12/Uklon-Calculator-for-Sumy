@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="uk">
 <head>
-    <meta charset="utf-8" />
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
 <title>Uklon — Перевірка розрахунків (Суми)</title>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Uklon Калькулятор (Суми)">
+<meta name="apple-mobile-web-app-title" content="Uklon Калькулятор">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png">
@@ -15,692 +15,624 @@
 <link rel="manifest" href="manifest.json">
 
 <style>
-/* --- ПЕРЕМЕННЫЕ ПО УМОЛЧАНИЮ (СВЕТЛАЯ ТЕМА) --- */
-:root {
-/* Основные цвета */
---bg: #f2f4f7;
---card: #ffffff;
---accent: #0066ff;
+  /* --- ПЕРЕМЕННЫЕ ПО УМОЛЧАНИЮ (СВЕТЛАЯ ТЕМА) --- */
+  :root{
+    /* Основные цвета */
+    --bg:#f2f4f7;
+    --card:#ffffff;
+    --accent:#0066ff;
+    
+    /* Тексты */
+    --main-text:#000000;
+    --muted-text:#6b6b6b; 
+    
+    /* Границы и разделители */
+    --border-color:#d8dce3;
+    --panel-border:#e7e9ee;
+    --line-divider:#eee;
+    
+    /* Цвета состояний */
+    --green:#c8f5c2;
+    --red:#ffd4d4;
+    --good:#0c7a27;
+    --bad:#a80000;
+    
+    /* Элементы .zero */
+    --zero-bg:#f4f4f4;
+    --zero-border:#ccc;
+    --zero-text:#555;
+    --small-btn-bg:#eee;
+  }
 
-/* Тексты */
---main-text: #000000;
---muted-text: #6b6b6b;
+  /* --- ПЕРЕМЕННЫЕ ДЛЯ ТЕМНОЙ ТЕМЫ --- */
+  .dark-theme{
+    /* Основные цвета */
+    --bg:#121212;
+    --card:#1f1f1f;
+    --accent:#5599ff;
+    
+    /* Тексты */
+    --main-text:#f0f0f0;
+    --muted-text:#ffffff;
+    
+    /* Границы и разделители */
+    --border-color:#333;
+    --panel-border:#2e2e2e;
+    --line-divider:#333;
+    
+    /* Цвета состояний */
+    --green:#1a3a1f; 
+    --red:#472c2c; 
+    --good:#5fb371; 
+    --bad:#ff7575; 
+    
+    /* Элементы .zero */
+    --zero-bg:#2d2d2d;
+    --zero-border:#444;
+    --zero-text:#a0a0a0;
+    --small-btn-bg:#333;
+  }
+  
+  /* --- БАЗОВЫЕ СТИЛИ (Одинаковые для обеих тем) --- */
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;
+    background:var(--bg);
+    margin:0;
+    padding:0;
+    color: var(--main-text); 
+  }
+  
+  /* Применяем основные стили для тёмной темы, когда класс установлен */
+  .dark-theme body {
+    background: var(--bg);
+    color: var(--main-text);
+  }
 
-/* Границы и разделители */
---border-color: #d8dce3;
---panel-border: #e7e9ee;
---line-divider: #eee;
+  .wrap{max-width:600px;margin:0 auto;padding:16px;}
+  h1{text-align:center;margin:0 0 16px;font-size:22px;font-weight:700;}
+  h5{text-align:center;}
 
-/* Цвета состояний */
---green: #c8f5c2;
---red: #ffd4d4;
---good: #0c7a27;
---bad: #a80000;
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:18px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    margin-bottom:16px;
+  }
 
-/* Элементы .zero */
---zero-bg: #f4f4f4;
---zero-border: #ccc;
---zero-text: #555;
---small-btn-bg: #eee;
-}
+  /* Для темной темы тени нужно сделать менее заметными */
+  .dark-theme .card {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
 
-/* --- ПЕРЕМЕННЫЕ ДЛЯ ТЕМНОЙ ТЕМЫ --- */
-.dark-theme {
-/* Основные цвета */
---bg: #121212;
---card: #1f1f1f;
---accent: #5599ff;
+  label{font-size:15px;color:var(--muted-text);margin-bottom:6px;display:block;}
 
-/* Тексты */
---main-text: #f0f0f0;
---muted-text: #ffffff;
+  input[type="number"]{
+    width:100%;
+    padding:14px 12px;
+    font-size:18px;
+    border-radius:12px;
+    border:1px solid var(--border-color);
+    margin-bottom:12px;
+    box-sizing:border-box;
+    background: var(--card);
+    color: var(--main-text);
+  }
 
-/* Границы и разделители */
---border-color: #333;
---panel-border: #2e2e2e;
---line-divider: #333;
+  input[type="number"]:focus{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 2px rgba(0,102,255,0.2);
+  }
 
-/* Цвета состояний */
---green: #1a3a1f;
---red: #472c2c;
---good: #5fb371;
---bad: #ff7575;
+  /* --- СТИЛИ ДЛЯ РЯДА КНОПОК --- */
+  .button-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
 
-/* Элементы .zero */
---zero-bg: #2d2d2d;
---zero-border: #444;
---zero-text: #a0a0a0;
---small-btn-bg: #333;
-}
+  .btn{
+    width:100%;
+    padding:14px;
+    border-radius:12px;
+    background:var(--accent);
+    border:0;
+    color:white;
+    font-size:18px;
+    font-weight:600;
+    flex-grow: 1; 
+  }
+  
+  .small-icon-btn {
+    padding: 14px;
+    border-radius: 12px;
+    border: 0;
+    color: white; 
+    cursor: pointer;
+    flex-shrink: 0; 
+  }
+  .small-icon-btn.red {
+    background: var(--bad); 
+  }
+  .small-icon-btn svg {
+    display: block;
+  }
+  /* --- КОНЕЦ СТИЛЕЙ ДЛЯ РЯДА КНОПОК --- */
 
-/* --- БАЗОВЫЕ СТИЛИ (Одинаковые для обеих тем) --- */
-body {
-font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;
-background: var(--bg);
-margin: 0;
-padding: 0;
-color: var(--main-text);
-}
+  .results{display:flex;flex-direction:column;gap:16px;}
 
-/* Применяем основные стили для тёмной темы, когда класс установлен */
-.dark-theme body {
-background: var(--bg);
-color: var(--main-text);
-}
+  .panel{
+    background:var(--card);
+    border-radius:16px;
+    padding:16px;
+    border:1px solid var(--panel-border);
+  }
 
-.wrap {
-max-width: 600px;
-margin: 0 auto;
-padding: 16px;
-}
-h1 {
-text-align: center;
-margin: 0 0 16px;
-font-size: 22px;
-font-weight: 700;
-}
+  .panel h3{margin:0 0 10px;font-size:18px;}
 
-h5 {
-text-align: center;
-}
+  .line{
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    font-size:16px;
+    border-top:1px solid var(--line-divider);
+  }
+  .line:first-of-type{border-top:0;padding-top:0;}
 
-.card {
-background: var(--card);
-border-radius: 16px;
-padding: 18px;
-box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-margin-bottom: 16px;
-}
+  .val{font-weight:700;}
 
-/* Для темной темы тени нужно сделать менее заметными */
-.dark-theme .card {
-box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
+  .diff{
+    padding:6px 12px;
+    border-radius:10px;
+    min-width:90px;
+    text-align:center;
+    display:inline-block;
+    font-weight:600;
+  }
 
-label {
-font-size: 15px;
-color: var(--muted-text);
-margin-bottom: 6px;
-display: block;
-}
+  .zero{
+    background:var(--zero-bg);
+    border:1px dashed var(--zero-border);
+    color:var(--zero-text);
+  }
 
-input[type="number"] {
-width: 100%;
-padding: 14px 12px;
-font-size: 18px;
-border-radius: 12px;
-border: 1px solid var(--border-color);
-margin-bottom: 12px;
-box-sizing: border-box;
-background: var(--card);
-color: var(--main-text);
-}
+  textarea{
+    width: 100%;
+    margin: 10px 0 0; /* Зменшений нижній відступ */
+    height: 140px;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+    display: block;
+    background: var(--card);
+    color: var(--main-text);
+  }
 
-input[type="number"]:focus {
-outline: none;
-border-color: var(--accent);
-box-shadow: 0 0 0 2px rgba(0,102,255,0.2);
-}
+  .row{display:flex;gap:10px;}
+  .small-btn{
+    padding:8px 12px;
+    border-radius:8px;
+    border:0;
+    background:var(--small-btn-bg);
+    color: var(--main-text);
+    cursor:pointer;
+  }
+  
+  /* --- НОВІ СТИЛІ ДЛЯ РЯДА КНОПКИ КОПІЮВАННЯ І СЧЕТЧИКА --- */
+  .copy-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px; 
+    margin-bottom: 5px;
+  }
 
-/* --- СТИЛИ ДЛЯ РЯДА КНОПОК --- */
-.button-row {
-display: flex;
-gap: 10px;
-align-items: center;
-}
+  .char-count {
+    font-size: 14px;
+    color: var(--muted-text); /* Сірий колір, не сильно відрізняється від фону */
+    padding: 5px 0;
+    min-width: 40px; 
+  }
 
-.btn {
-width: 100%;
-padding: 14px;
-border-radius: 12px;
-background: var(--accent);
-border: 0;
-color: white;
-font-size: 18px;
-font-weight: 600;
-flex-grow: 1;
-}
+  .char-count.limit-ok {
+    color: var(--muted-text);
+  }
 
-.small-icon-btn {
-padding: 14px;
-border-radius: 12px;
-border: 0;
-color: white;
-cursor: pointer;
-flex-shrink: 0;
-}
-.small-icon-btn.red {
-background: var(--bad);
-}
-.small-icon-btn svg {
-display: block;
-}
-/* --- КОНЕЦ СТИЛЕЙ ДЛЯ РЯДА КНОПОК --- */
+  .char-count.limit-exceeded {
+    color: var(--bad); /* Червоний колір */
+    font-weight: 700;
+  }
+  /* --- КІНЕЦЬ НОВИХ СТИЛІВ --- */
+  
+  /* --- Стили для дополнительных параметров и переключателей --- */
+  .toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0 6px;
+    font-size: 16px;
+  }
 
-.results {
-display: flex;
-flex-direction: column;
-gap: 16px;
-}
+  #extraFields {
+    overflow: hidden;
+    max-height: 0;
+    padding: 0;
+    transition: max-height 0.35s ease, padding 0.25s ease;
+  }
 
-.panel {
-background: var(--card);
-border-radius: 16px;
-padding: 16px;
-border: 1px solid var(--panel-border);
-}
+  #extraFields.open {
+    max-height: 300px;
+    padding: 10px 0;
+  }
 
-.panel h3 {
-margin: 0 0 10px;
-font-size: 18px;
-}
+  #extraFields label {
+    display: block;
+    margin: 8px 0 4px;
+  }
 
-.line {
-display: flex;
-justify-content: space-between;
-padding: 8px 0;
-font-size: 16px;
-border-top: 1px solid var(--line-divider);
-}
-.line:first-of-type {
-border-top: 0;
-padding-top: 0;
-}
+  #extraFields input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    font-size: 16px;
+    box-sizing: border-box;
+    background: var(--card);
+    color: var(--main-text);
+  }
+  
+  /* --- CSS ДЛЯ КАСТОМНОГО СЛАЙДЕРА (TOGGLE SWITCH) --- */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px; 
+    height: 28px; 
+  }
 
-.val {
-font-weight: 700;
-}
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
 
-.diff {
-padding: 6px 12px;
-border-radius: 10px;
-min-width: 90px;
-text-align: center;
-display: inline-block;
-font-weight: 600;
-}
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: .4s;
+    border-radius: 28px;
+    background-color: var(--zero-bg); 
+    border: 1px solid var(--zero-border);
+  }
 
-.zero {
-background: var(--zero-bg);
-border: 1px dashed var(--zero-border);
-color: var(--zero-text);
-}
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 3px;
+    background-color: white; 
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
 
-textarea {
-width: 100%;
-margin: 10px 0 0;
-/* Зменшений нижній відступ */
-height: 140px;
-border-radius: 10px;
-padding: 10px;
-font-size: 14px;
-border: 1px solid var(--border-color);
-box-sizing: border-box;
-display: block;
-background: var(--card);
-color: var(--main-text);
-}
+  /* Активное состояние */
+  input:checked + .slider {
+    background-color: var(--accent);
+    border-color: var(--accent);
+  }
 
-.row {
-display: flex;
-gap: 10px;
-}
-.small-btn {
-padding: 8px 12px;
-border-radius: 8px;
-border: 0;
-background: var(--small-btn-bg);
-color: var(--main-text);
-cursor: pointer;
-}
-
-/* --- НОВІ СТИЛІ ДЛЯ РЯДА КНОПКИ КОПІЮВАННЯ І СЧЕТЧИКА --- */
-.copy-row {
-display: flex;
-align-items: center;
-gap: 10px;
-margin-top: 8px;
-margin-bottom: 5px;
-}
-
-.char-count {
-font-size: 14px;
-color: var(--muted-text);
-/* Сірий колір, не сильно відрізняється від фону */
-padding: 5px 0;
-min-width: 40px;
-}
-
-.char-count.limit-ok {
-color: var(--muted-text);
-}
-
-.char-count.limit-exceeded {
-color: var(--bad);
-/* Червоний колір */
-font-weight: 700;
-}
-/* --- КІНЕЦЬ НОВИХ СТИЛІВ --- */
-
-/* --- Стили для дополнительных параметров и переключателей --- */
-.toggle-row {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin: 12px 0 6px;
-font-size: 16px;
-}
-
-#extraFields {
-overflow: hidden;
-max-height: 0;
-padding: 0;
-transition: max-height 0.35s ease, padding 0.25s ease;
-}
-
-#extraFields.open {
-max-height: 300px;
-padding: 10px 0;
-}
-
-#extraFields label {
-display: block;
-margin: 8px 0 4px;
-}
-
-#extraFields input {
-width: 100%;
-padding: 12px;
-border-radius: 10px;
-border: 1px solid var(--border-color);
-font-size: 16px;
-box-sizing: border-box;
-background: var(--card);
-color: var(--main-text);
-}
-
-/* --- CSS ДЛЯ КАСТОМНОГО СЛАЙДЕРА (TOGGLE SWITCH) --- */
-.switch {
-position: relative;
-display: inline-block;
-width: 50px;
-height: 28px;
-}
-
-.switch input {
-opacity: 0;
-width: 0;
-height: 0;
-}
-
-.slider {
-position: absolute;
-cursor: pointer;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-transition: .4s;
-border-radius: 28px;
-background-color: var(--zero-bg);
-border: 1px solid var(--zero-border);
-}
-
-.slider:before {
-position: absolute;
-content: "";
-height: 20px;
-width: 20px;
-left: 4px;
-bottom: 3px;
-background-color: white;
-transition: .4s;
-border-radius: 50%;
-box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-
-/* Активное состояние */
-input:checked + .slider {
-background-color: var(--accent);
-border-color: var(--accent);
-}
-
-input:checked + .slider:before {
-transform: translateX(20px);
-}
+  input:checked + .slider:before {
+    transform: translateX(20px);
+  }
 </style>
 </head>
 
 <body>
 <div class="wrap">
-<h1>Перевірка розрахунків Uklon (м.Суми)</h1>
-<h5>Тарифи оновлено 08.02.2026 року</h5>
-<div class="card">
-<label>Фактична сума, грн</label>
-<input id="actual" type="number" inputmode="decimal" placeholder="95">
+  <h1>Перевірка розрахунків Uklon (м. Суми)</h1>
+  <h5>Тарифи оновлено 08.02.2026</h5>
+  <div class="card">
+    <label>Фактична сума, грн</label>
+    <input id="actual" type="number" inputmode="decimal" placeholder="95">
 
-<label>Відстань, км</label>
-<input id="distance" type="number" inputmode="decimal" step="0.01" placeholder="2.3">
+    <label>Пробіг, км</label>
+    <input id="distance" type="number" inputmode="decimal" step="0.01" placeholder="2.3">
 
-<label>Коефіцієнт</label>
-<input id="coef" type="number" step="0.01" value="1">
+    <label>Коефіцієнт</label>
+    <input id="coef" type="number" inputmode="decimal" step="0.01" placeholder="1.07">
 
-<label class="toggle-row">
-<span>Додаткові параметри</span>
-<label class="switch">
-<input type="checkbox" id="extraToggle">
-<span class="slider"></span>
-</label>
-</label>
+    <label class="toggle-row">
+      <span>Додаткові параметри</span>
+      <label class="switch">
+        <input type="checkbox" id="extraToggle">
+        <span class="slider"></span>
+      </label>
+    </label>
 
-<div id="extraFields">
-<label>Кількість платних хвилин</label>
-<input id="paidMinutes" type="number" step="1" placeholder="необов’язково">
+    <div id="extraFields">
+      <label>Кількість платних хвилин</label>
+      <input id="paidMinutes" type="number" step="1" placeholder="необов’язково">
 
-<label>Кількість проміжних точок</label>
-<input id="midPoints" type="number" step="1" placeholder="необов’язково">
-</div>
+      <label>Кількість проміжних точок</label>
+      <input id="midPoints" type="number" step="1" placeholder="необов’язково">
+    </div>
 
-<div class="button-row">
-<button class="small-icon-btn red" id="clearBtn" title="Очистити">
-<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-<path d="M16 9v10H8V9h8m-1.5-6h-5L9 4H7v2h10V4h-2l-1.5-3zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z" />
-</svg>
-</button>
-<button class="btn" id="calcBtn">Розрахувати</button>
-</div>
-</div>
+    <div class="button-row">
+      <button class="small-icon-btn red" id="clearBtn" title="Очистити">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+          <path d="M16 9v10H8V9h8m-1.5-6h-5L9 4H7v2h10V4h-2l-1.5-3zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"/>
+        </svg>
+      </button>
+      <button class="btn" id="calcBtn">Розрахувати</button>
+    </div>
+  </div>
 
-<div class="card">
-<label class="toggle-row">
-<span>Темна тема</span>
-<label class="switch">
-<input type="checkbox" id="themeToggle">
-<span class="slider"></span>
-</label>
-</label>
-</div>
+  <div class="card">
+    <label class="toggle-row">
+      <span>Темна тема</span>
+      <label class="switch">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider"></span>
+      </label>
+    </label>
+  </div>
 
-<div class="results">
-<div class="panel">
-<h3>Стандарт</h3>
-<div class="line">
-<span>Розрахункова сума</span><span class="val" id="stdCalc">—</span>
-</div>
-<div class="line">
-<span>Різниця</span><span class="diff zero" id="stdDiff">—</span>
-</div>
-<textarea id="stdMsg" placeholder="Повідомлення для оператора зʼявиться тут"></textarea>
-<div class="copy-row">
-<button class="small-btn" id="copyStd">Копіювати</button>
-<span class="char-count" id="stdCharCount">—</span>
-</div>
-</div>
+  <div class="results">
+    <div class="panel">
+      <h3>Стандарт</h3>
+      <div class="line"><span>Розрахункова сума</span><span class="val" id="stdCalc">—</span></div>
+      <div class="line"><span>Різниця</span><span class="diff zero" id="stdDiff">—</span></div>
+      <textarea id="stdMsg" placeholder="Повідомлення для оператора зʼявиться тут"></textarea>
+      <div class="copy-row">
+        <button class="small-btn" id="copyStd">Копіювати</button>
+        <span class="char-count" id="stdCharCount">—</span>
+      </div>
+    </div>
 
-<div class="panel">
-<h3>Комфорт</h3>
-<div class="line">
-<span>Розрахункова сума</span><span class="val" id="cfCalc">—</span>
-</div>
-<div class="line">
-<span>Різниця</span><span class="diff zero" id="cfDiff">—</span>
-</div>
-<textarea id="cfMsg" placeholder="Повідомлення для оператора зʼявиться тут"></textarea>
-<div class="copy-row">
-<button class="small-btn" id="copyCf">Копіювати</button>
-<span class="char-count" id="cfCharCount">—</span>
-</div>
-</div>
+    <div class="panel">
+      <h3>Комфорт</h3>
+      <div class="line"><span>Розрахункова сума</span><span class="val" id="cfCalc">—</span></div>
+      <div class="line"><span>Різниця</span><span class="diff zero" id="cfDiff">—</span></div>
+      <textarea id="cfMsg" placeholder="Повідомлення для оператора зʼявиться тут"></textarea>
+      <div class="copy-row">
+        <button class="small-btn" id="copyCf">Копіювати</button>
+        <span class="char-count" id="cfCharCount">—</span>
+      </div>
+    </div>
 
-<div class="panel">
-<h3>Універсал</h3>
-<div class="line">
-<span>Розрахункова сума</span><span class="val" id="bizCalc">—</span>
-</div>
-<div class="line">
-<span>Різниця</span><span class="diff zero" id="bizDiff">—</span>
-</div>
-<textarea id="bizMsg" placeholder="Повідомлення для оператора зʼявиться тут"></textarea>
-<div class="copy-row">
-<button class="small-btn" id="copyBiz">Копіювати</button>
-<span class="char-count" id="bizCharCount">—</span>
-</div>
-</div>
+    <div class="panel">
+      <h3>Універсал</h3>
+      <div class="line"><span>Розрахункова сума</span><span class="val" id="bizCalc">—</span></div>
+      <div class="line"><span>Різниця</span><span class="diff zero" id="bizDiff">—</span></div>
+      <textarea id="bizMsg" placeholder="Повідомлення для оператора зʼявиться тут"></textarea>
+      <div class="copy-row">
+        <button class="small-btn" id="copyBiz">Копіювати</button>
+        <span class="char-count" id="bizCharCount">—</span>
+      </div>
+    </div>
 
-</div>
+  </div>
 </div>
 
 <script>
-const STD = {
-minKm: 2.3,
-base: 95,
-perKm: 17.9,
-name: "Стандарт",
-extraMinute: 3,
-extraPoint: 10
-};
-const CFM = {
-minKm: 2.2,
-base: 100,
-perKm: 20.6,
-name: "Комфорт",
-extraMinute: 3,
-extraPoint: 15
-};
-const BIZ = {
-minKm: 1.4,
-base: 100,
-extraPo20.2,
-name: "Універсал",
-extraMinute: 4,
-extraPoint: 15
-};
+const STD = {minKm:2.3, base:95, perKm:17.9, name:"Стандарт", extraMinute:3, extraPoint:10};
+const CFM = {minKm:2.2, base:100, perKm:20.6, name:"Комфорт", extraMinute:3, extraPoint:15};
+const BIZ = {minKm:1.4, base:100, perKm:20.2, name:"Універсал", extraMinute:4, extraPoint:15};
 const CHAR_LIMIT = 250; // Ліміт символів
 
-function calcFare(km, t) {
-return km <= t.minKm ? t.base: t.base + (km - t.minKm) * t.perKm;
+function calcFare(km, t){
+  return km <= t.minKm ? t.base : t.base + (km - t.minKm) * t.perKm;
 }
 
-function fmt(x) {
-return isNaN(x) ? "—": x.toFixed(2) + " ₴";
+function fmt(x){
+  return isNaN(x) ? "—" : x.toFixed(2) + " ₴";
 }
 
-function colorize(el, v) {
-el.className = "diff";
-if (isNaN(v)) {
-el.classList.add("zero");
-el.textContent = "—";
-return;
-}
+function colorize(el, v){
+  el.className = "diff";
+  if(isNaN(v)){
+    el.classList.add("zero");
+    el.textContent = "—";
+    return;
+  }
 
-el.textContent = v.toFixed(2) + " ₴";
+  el.textContent = v.toFixed(2) + " ₴";
 
-if (v > 0) {
-el.style.background = "var(--green)";
-el.style.color = "var(--good)";
-} else if (v < 0) {
-el.style.background = "var(--red)";
-el.style.color = "var(--bad)";
-} else {
-el.classList.add("zero");
-el.style.background = "";
-el.style.color = "";
-}
+  if(v > 0){
+    el.style.background = "var(--green)";
+    el.style.color = "var(--good)";
+  } 
+  else if(v < 0){
+    el.style.background = "var(--red)";
+    el.style.color = "var(--bad)";
+  }
+  else {
+    el.classList.add("zero");
+    el.style.background = ""; 
+    el.style.color = ""; 
+  }
 }
 
 // Функція для оновлення лічильника символів
-function updateCharCount(taId, countId, limit = CHAR_LIMIT) {
-const ta = document.getElementById(taId);
-const countEl = document.getElementById(countId);
-
-if (!ta || !countEl) return;
-
-const currentCount = ta.value.length;
-countEl.textContent = `${currentCount}/${limit}`;
-countEl.className = 'char-count'; // Скидання класів
-
-if (currentCount === 0) {
-countEl.textContent = '—'; // Відображаємо прочерк, коли поле порожнє
-} else if (currentCount > limit) {
-// Якщо перевищено - червоний
-countEl.classList.add('limit-exceeded');
-} else {
-// Якщо в нормі - сірий (muted-text)
-countEl.classList.add('limit-ok');
-}
+function updateCharCount(taId, countId, limit = CHAR_LIMIT){
+  const ta = document.getElementById(taId);
+  const countEl = document.getElementById(countId);
+  
+  if (!ta || !countEl) return;
+  
+  const currentCount = ta.value.length;
+  countEl.textContent = `${currentCount}/${limit}`;
+  countEl.className = 'char-count'; // Скидання класів
+  
+  if (currentCount === 0) {
+    countEl.textContent = '—'; // Відображаємо прочерк, коли поле порожнє
+  } else if (currentCount > limit) {
+    // Якщо перевищено - червоний
+    countEl.classList.add('limit-exceeded');
+  } else {
+    // Якщо в нормі - сірий (muted-text)
+    countEl.classList.add('limit-ok');
+  }
 }
 
 
 function getGreeting() {
-const h = new Date().getHours();
+  const h = new Date().getHours();
 
-if (h >= 5 && h < 12) return "Доброго ранку!🌤️";
-if (h >= 12 && h < 17) return "Доброго дня!🌤️";
-if (h >= 17 && h < 23) return "Доброго вечора!🌙✨";
-return "Доброї ночі!✨🌙";
+  if (h >= 5 && h < 12) return "Доброго ранку!🌤️";
+  if (h >= 12 && h < 17) return "Доброго дня!🌤️";
+  if (h >= 17 && h < 23) return "Доброго вечора!🌙✨";
+  return "Доброї ночі!✨🌙";
 }
 
-function genMsg(t, km, coef, actual, paidMinutes, midPoints) {
-const baseFare = calcFare(km, t);
-let total = baseFare * coef;
+function genMsg(t, km, coef, actual, paidMinutes, midPoints){
+  const baseFare = calcFare(km, t);
+  let total = baseFare * coef;
 
-let lines = [`• (${t.base} + (${km.toFixed(2)} - ${t.minKm}) × ${t.perKm}) × ${coef.toFixed(2)} = ${(baseFare*coef).toFixed(2)}💵`];
+  let lines = [`• (${t.base} + (${km.toFixed(2)} - ${t.minKm}) × ${t.perKm}) × ${coef.toFixed(2)} = ${(baseFare*coef).toFixed(2)}💵`];
 
-if (paidMinutes > 0) {
-let addPaid = coef * paidMinutes * t.extraMinute;
-lines.push(`• Платні хв. (${coef.toFixed(2)} × ${paidMinutes} × ${t.extraMinute}💵) = ${addPaid.toFixed(2)}💵`);
-total += addPaid;
-}
-if (midPoints > 0) {
-let addPoints = midPoints * t.extraPoint;
-lines.push(`• Проміжні точки (${midPoints} × ${t.extraPoint}💵) = ${addPoints.toFixed(2)}💵`);
-total += addPoints;
-}
+  if(paidMinutes > 0){
+    let addPaid = coef * paidMinutes * t.extraMinute;
+    lines.push(`• Платні хв. ${coef.toFixed(2)} × (${paidMinutes} × ${t.extraMinute}💵) = ${addPaid.toFixed(2)}💵`);
+    total += addPaid;
+  }
+  if(midPoints > 0){
+    let addPoints = midPoints * t.extraPoint;
+    lines.push(`• Проміжні точки (${midPoints} × ${t.extraPoint}💵) = ${addPoints.toFixed(2)}💵`);
+    total += addPoints;
+  }
 
-const diff = total - actual;
-// Повідомлення генерується лише, якщо розрахункова сума > фактичної
-if (diff <= 0) return "";
+  const diff = total - actual;
+  // Повідомлення генерується лише, якщо розрахункова сума > фактичної
+  if(diff <= 0) return ""; 
 
-const greeting = getGreeting();
+  const greeting = getGreeting();
 
-return `${greeting}
-Прошу дорахувати на баланс ${diff.toFixed(2)}💵.
-Сума згідно розрахунку- ${total.toFixed(2)}💵:
+  return `${greeting}
+Фактична сума замовлення — ${actual.toFixed(2)}💵
+Сума по тарифу - ${total.toFixed(2)}💵:
 ${lines.join("\n")}
-Фактична — ${actual.toFixed(2)}💵
+ПРОШУ ДОНАРАХУВАТИ - ${diff.toFixed(2)}💵
 Щиро дякую!🤗`;
 }
 
-function bindCopy(btnId, taId) {
-const btn = document.getElementById(btnId);
-btn.onclick = function() {
-const t = document.getElementById(taId);
-if (!t.value) {
-alert('Немає повідомлення для копіювання');
-return;
-}
-if (t.value.length > CHAR_LIMIT) {
-alert(`Увага: Повідомлення перевищує ліміт ${CHAR_LIMIT} символів. Поточна довжина: ${t.value.length}.`);
-}
-t.select();
-t.setSelectionRange(0, 99999);
-navigator.clipboard.writeText(t.value).then(
-() => alert('Скопійовано'),
-() => {
-document.execCommand('copy'); alert('Скопійовано');
-}
-);
-};
+function bindCopy(btnId, taId){
+  const btn = document.getElementById(btnId);
+  btn.onclick = function(){
+    const t = document.getElementById(taId);
+    if(!t.value){
+      alert('Немає повідомлення для копіювання');
+      return;
+    }
+    if (t.value.length > CHAR_LIMIT) {
+      alert(`Увага: Повідомлення перевищує ліміт ${CHAR_LIMIT} символів. Поточна довжина: ${t.value.length}.`);
+    }
+    t.select();
+    t.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(t.value).then(
+      () => alert('Скопійовано'),
+      () => { document.execCommand('copy'); alert('Скопійовано'); }
+    );
+  };
 }
 
-bindCopy('copyStd', 'stdMsg');
-bindCopy('copyCf', 'cfMsg');
-bindCopy('copyBiz', 'bizMsg');
+bindCopy('copyStd','stdMsg');
+bindCopy('copyCf','cfMsg');
+bindCopy('copyBiz','bizMsg');
 
-document.getElementById("calcBtn").onclick = function() {
-const actual = parseFloat(document.getElementById("actual").value);
-const km = parseFloat(document.getElementById("distance").value);
-const coef = parseFloat(document.getElementById("coef").value);
-const paidMinutes = parseInt(document.getElementById("paidMinutes").value) || 0;
-const midPoints = parseInt(document.getElementById("midPoints").value) || 0;
+document.getElementById("calcBtn").onclick = function(){
+  const actual = parseFloat(document.getElementById("actual").value);
+  const km = parseFloat(document.getElementById("distance").value);
+  const coef = parseFloat(document.getElementById("coef").value);
+  const paidMinutes = parseInt(document.getElementById("paidMinutes").value) || 0;
+  const midPoints = parseInt(document.getElementById("midPoints").value) || 0;
 
-if (isNaN(km) || isNaN(coef) || isNaN(actual)) {
-alert("Введіть коректні дані");
-return;
-}
+  if(isNaN(km) || isNaN(coef) || isNaN(actual)){
+    alert("Введіть коректні дані");
+    return;
+  }
 
-const totals = {
-std: calcFare(km, STD) * coef + coef * paidMinutes*STD.extraMinute + midPoints*STD.extraPoint,
-cf: calcFare(km, CFM) * coef + coef * paidMinutes*CFM.extraMinute + midPoints*CFM.extraPoint,
-biz: calcFare(km, BIZ) * coef + coef * paidMinutes*BIZ.extraMinute + midPoints*BIZ.extraPoint
-};
+  const totals = {
+    std: calcFare(km, STD) * coef + coef * paidMinutes*STD.extraMinute + midPoints*STD.extraPoint,
+    cf: calcFare(km, CFM) * coef + coef * paidMinutes*CFM.extraMinute + midPoints*CFM.extraPoint,
+    biz: calcFare(km, BIZ) * coef + coef * paidMinutes*BIZ.extraMinute + midPoints*BIZ.extraPoint
+  };
 
-document.getElementById("stdCalc").textContent = fmt(totals.std);
-document.getElementById("cfCalc").textContent = fmt(totals.cf);
-document.getElementById("bizCalc").textContent = fmt(totals.biz);
+  document.getElementById("stdCalc").textContent = fmt(totals.std);
+  document.getElementById("cfCalc").textContent = fmt(totals.cf);
+  document.getElementById("bizCalc").textContent = fmt(totals.biz);
 
-// Для разницы используем фактическая - расчетная (Actual - Calculated)
-colorize(document.getElementById("stdDiff"), actual - totals.std);
-colorize(document.getElementById("cfDiff"), actual - totals.cf);
-colorize(document.getElementById("bizDiff"), actual - totals.biz);
+  // Для разницы используем фактическая - расчетная (Actual - Calculated)
+  colorize(document.getElementById("stdDiff"), actual - totals.std);
+  colorize(document.getElementById("cfDiff"), actual - totals.cf);
+  colorize(document.getElementById("bizDiff"), actual - totals.biz);
 
-// Оновлення повідомлень
-document.getElementById('stdMsg').value = genMsg(STD, km, coef, actual, paidMinutes, midPoints);
-document.getElementById('cfMsg').value = genMsg(CFM, km, coef, actual, paidMinutes, midPoints);
-document.getElementById('bizMsg').value = genMsg(BIZ, km, coef, actual, paidMinutes, midPoints);
-
-// Оновлення лічильників символів
-updateCharCount('stdMsg', 'stdCharCount');
-updateCharCount('cfMsg', 'cfCharCount');
-updateCharCount('bizMsg', 'bizCharCount');
+  // Оновлення повідомлень
+  document.getElementById('stdMsg').value = genMsg(STD, km, coef, actual, paidMinutes, midPoints);
+  document.getElementById('cfMsg').value = genMsg(CFM, km, coef, actual, paidMinutes, midPoints);
+  document.getElementById('bizMsg').value = genMsg(BIZ, km, coef, actual, paidMinutes, midPoints);
+  
+  // Оновлення лічильників символів
+  updateCharCount('stdMsg', 'stdCharCount');
+  updateCharCount('cfMsg', 'cfCharCount');
+  updateCharCount('bizMsg', 'bizCharCount');
 };
 
-document.getElementById("clearBtn").onclick = function() {
-// Очистка полів вводу і результатів
-document.getElementById("actual").value = '';
-document.getElementById("distance").value = '';
-document.getElementById("coef").value = '';
-document.getElementById("paidMinutes").value = '';
-document.getElementById("midPoints").value = '';
-
-document.getElementById("stdCalc").textContent = '—';
-document.getElementById("cfCalc").textContent = '—';
-document.getElementById("bizCalc").textContent = '—';
-
-colorize(document.getElementById("stdDiff"), NaN);
-colorize(document.getElementById("cfDiff"), NaN);
-colorize(document.getElementById("bizDiff"), NaN);
-
-document.getElementById('stdMsg').value = '';
-document.getElementById('cfMsg').value = '';
-document.getElementById('bizMsg').value = '';
-
-// Оновлення лічильників символів
-updateCharCount('stdMsg', 'stdCharCount');
-updateCharCount('cfMsg', 'cfCharCount');
-updateCharCount('bizMsg', 'bizCharCount');
-
-const extraToggle = document.getElementById('extraToggle');
-const extraFields = document.getElementById('extraFields');
-if (extraToggle.checked) {
-extraToggle.checked = false;
-extraFields.classList.remove('open');
-}
+document.getElementById("clearBtn").onclick = function(){
+  // Очистка полів вводу і результатів
+  document.getElementById("actual").value = '';
+  document.getElementById("distance").value = '';
+  document.getElementById("coef").value = '';
+  document.getElementById("paidMinutes").value = '';
+  document.getElementById("midPoints").value = '';
+  
+  document.getElementById("stdCalc").textContent = '—';
+  document.getElementById("cfCalc").textContent = '—';
+  document.getElementById("bizCalc").textContent = '—';
+  
+  colorize(document.getElementById("stdDiff"), NaN);
+  colorize(document.getElementById("cfDiff"), NaN);
+  colorize(document.getElementById("bizDiff"), NaN);
+  
+  document.getElementById('stdMsg').value = '';
+  document.getElementById('cfMsg').value = '';
+  document.getElementById('bizMsg').value = '';
+  
+  // Оновлення лічильників символів
+  updateCharCount('stdMsg', 'stdCharCount');
+  updateCharCount('cfMsg', 'cfCharCount');
+  updateCharCount('bizMsg', 'bizCharCount');
+  
+  const extraToggle = document.getElementById('extraToggle');
+  const extraFields = document.getElementById('extraFields');
+  if (extraToggle.checked) {
+    extraToggle.checked = false;
+    extraFields.classList.remove('open');
+  }
 };
 
 
 document.getElementById('extraToggle').addEventListener('change', function () {
-const extra = document.getElementById('extraFields');
-const paidInput = document.getElementById('paidMinutes');
-const midInput = document.getElementById('midPoints');
+  const extra = document.getElementById('extraFields');
+  const paidInput = document.getElementById('paidMinutes');
+  const midInput = document.getElementById('midPoints');
 
-if (this.checked) {
-extra.classList.add('open');
-} else {
-extra.classList.remove('open');
-paidInput.value = '';
-midInput.value = '';
-}
+  if (this.checked) {
+    extra.classList.add('open');
+  } else {
+    extra.classList.remove('open');
+    paidInput.value = '';
+    midInput.value = '';
+  }
 });
 
 
@@ -711,25 +643,25 @@ const THEME_KEY = 'uklonTheme';
 
 // 1. Установка начальной темы при загрузке
 function setInitialTheme() {
-const savedTheme = localStorage.getItem(THEME_KEY);
-
-if (savedTheme === 'dark') {
-body.classList.add('dark-theme');
-themeToggle.checked = true;
-}
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  
+  if (savedTheme === 'dark') {
+    body.classList.add('dark-theme');
+    themeToggle.checked = true;
+  } 
 }
 
 // 2. Обработчик для переключателя
 themeToggle.addEventListener('change', function () {
-if (this.checked) {
-// Включаем тёмную тему
-body.classList.add('dark-theme');
-localStorage.setItem(THEME_KEY, 'dark');
-} else {
-// Включаем светлую тему
-body.classList.remove('dark-theme');
-localStorage.setItem(THEME_KEY, 'light');
-}
+  if (this.checked) {
+    // Включаем тёмную тему
+    body.classList.add('dark-theme');
+    localStorage.setItem(THEME_KEY, 'dark');
+  } else {
+    // Включаем светлую тему
+    body.classList.remove('dark-theme');
+    localStorage.setItem(THEME_KEY, 'light');
+  }
 });
 
 // Вызываем функцию для установки темы после загрузки скрипта
@@ -738,9 +670,9 @@ setInitialTheme();
 
 // PWA Service Worker registration
 if ('serviceWorker' in navigator) {
-navigator.serviceWorker.register('service-worker.js')
-.then(() => console.log('Service Worker зареєстрований'))
-.catch(err => console.log('Service Worker помилка:', err));
+  navigator.serviceWorker.register('service-worker.js')
+    .then(() => console.log('Service Worker зареєстрований'))
+    .catch(err => console.log('Service Worker помилка:', err));
 }
 </script>
 </body>
