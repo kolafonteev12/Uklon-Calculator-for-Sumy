@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-<title>Uklon — Перевірка розрахунків</title>
+<title>Uklon — Перевірка розрахунків (Суми)</title>
 
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Uklon Калькулятор Суми">
+<meta name="apple-mobile-web-app-title" content="Uklon Калькулятор (Суми)">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png">
@@ -98,6 +98,10 @@ text-align: center;
 margin: 0 0 16px;
 font-size: 22px;
 font-weight: 700;
+}
+
+h5 {
+text-align: center;
 }
 
 .card {
@@ -369,7 +373,8 @@ transform: translateX(20px);
 
 <body>
 <div class="wrap">
-<h1>Перевірка розрахунків Uklon м.Суми оновлено 29.01.26р.</h1>
+<h1>Перевірка розрахунків Uklon (м.Суми)</h1>
+<h5>Тарифи оновлено 29.01.2026 року</h5>
 <div class="card">
 <label>Фактична сума, грн</label>
 <input id="actual" type="number" inputmode="decimal" placeholder="95">
@@ -378,7 +383,7 @@ transform: translateX(20px);
 <input id="distance" type="number" inputmode="decimal" step="0.01" placeholder="2.3">
 
 <label>Коефіцієнт</label>
-<input id="coef" type="number" inputmode="decimal" step="0.01" placeholder="1.0">
+<input id="coef" type="number" step="0.01" value="1">
 
 <label class="toggle-row">
 <span>Додаткові параметри</span>
@@ -469,7 +474,7 @@ transform: translateX(20px);
 const STD = {
 minKm: 2.3,
 base: 95,
-perKm: 17.1,
+perKm: 17.9,
 name: "Стандарт",
 extraMinute: 3,
 extraPoint: 10
@@ -477,7 +482,7 @@ extraPoint: 10
 const CFM = {
 minKm: 2.2,
 base: 100,
-perKm: 19.8,
+perKm: 20.6,
 name: "Комфорт",
 extraMinute: 3,
 extraPoint: 15
@@ -485,7 +490,7 @@ extraPoint: 15
 const BIZ = {
 minKm: 1.4,
 base: 100,
-perKm: 19.4,
+extraPo20.2,
 name: "Універсал",
 extraMinute: 4,
 extraPoint: 15
@@ -579,8 +584,8 @@ if (diff <= 0) return "";
 const greeting = getGreeting();
 
 return `${greeting}
-Прошу донарахувати ${diff.toFixed(2)}💵.
-Розрахункова сума - ${total.toFixed(2)}💵:
+Прошу дорахувати на баланс ${diff.toFixed(2)}💵.
+Сума згідно розрахунку- ${total.toFixed(2)}💵:
 ${lines.join("\n")}
 Фактична — ${actual.toFixed(2)}💵
 Щиро дякую!🤗`;
